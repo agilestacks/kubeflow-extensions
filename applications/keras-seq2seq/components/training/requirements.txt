@@ -1,0 +1,13 @@
+numpy==1.16.2
+scikit-learn
+ktext
+IPython
+annoy
+tqdm
+nltk
+matplotlib
+bernoulli
+h5py
+# git clone https://github.com/google/seq2seq.git \
+./seq2seq/
+joblib

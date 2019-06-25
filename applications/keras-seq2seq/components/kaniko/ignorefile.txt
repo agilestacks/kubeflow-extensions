@@ -1,0 +1,17 @@
+.DS_Store
+.envrc
+.hub/*
+.hub/
+*.template
+*.md
+*.ipynb
+*.template
+.attic/*
+.hub/*
+*.tar.gz
+jupyter_notebook_config.py
+bucket-volume.yaml
+profile_default/*
+*.hdf5
+*.dpkl
+*.log

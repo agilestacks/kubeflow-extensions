@@ -1,0 +1,28 @@
+name: docker_image
+description: >-
+  Build and push docker image using Kaniko
+inputs:
+- name: image
+  type: String
+  description: >-
+    Destination image to build
+- name: dockerfile
+  default: Dockerfile
+  type: String
+  description: >-
+    Name of the dockerfile to build
+- name: build_context
+  type: String
+  default: '.'
+  description: >-
+    Directory where build should happen (must exist inside kaniko container
+outputs: []
+implementation:
+  container:
+    image: gcr.io/kaniko-project/executor:latest
+    args: [
+      --destination, {inputValue: image},
+      --dockerfile, {inputValue: dockerfile},
+      --context, {inputValue: build_context},
+      --cache
+    ]

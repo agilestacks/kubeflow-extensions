@@ -1,0 +1,51 @@
+apiVersion: "machinelearning.seldon.io/v1alpha2"
+kind: "SeldonDeployment"
+metadata:
+  name: "{{SELDON_DEPLOYMENT}}"
+  namespace: "{{NAMESPACE}}"
+  labels:
+    app: "seldon"
+spec:
+  annotations:
+    deployment_version: "{{MODEL_VERSION}}"
+    project_name: "{{MODEL_NAME}}"
+  name: "{{MODEL_NAME}}"
+  oauth_key: "{{SELDON_OAUTH_KEY}}"
+  oauth_secret: "{{SELDON_OAUTH_SECRET}}"
+  predictors:
+  - annotations:
+      predictor_version: "{{MODEL_VERSION}}"
+    componentSpecs:
+    - spec:
+        containers:
+        - name: "{{MODEL_NAME}}"
+          image: "{{SERVING_IMAGE}}"
+          imagePullPolicy: "Always"
+          env:
+          - name: SERVICE_TYPE
+            value: "MODEL"
+          - name: PERSISTENCE
+            value: "0"
+          - name: MODEL_FILE
+            value: "{{MODEL_FILE}}"
+          - name: TITLE_PP_FILE
+            value: "{{TITLE_PP_FILE}}"
+          - name: BODY_PP_FILE
+            value: "{{BODY_PP_FILE}}"
+          volumeMounts:
+          - mountPath: "{{MOUNT_PATH}}"
+            name: "persistent-storage"
+        terminationGracePeriodSeconds: 1
+        volumes:
+        - name: "persistent-storage"
+          volumeSource:
+            persistentVolumeClaim:
+              claimName: "{{BUCKET_PVC}}"
+    graph:
+      children: []
+      endpoint:
+        type: "REST"
+      name: "{{MODEL_NAME}}"
+      type: "MODEL"
+    name: "{{MODEL_NAME}}"
+    replicas: {{SELDON_DEPLOYMENT_REPLICAS}}

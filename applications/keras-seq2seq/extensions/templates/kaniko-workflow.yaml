@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: build-image-
+spec:
+  entrypoint: build
+  serviceAccountName: 'pipeline-runner'
+  arguments:
+    parameters:
+    - name: image
+      value: '{{DOCKER_REGISTRY}}/{{DOCKER_IMAGE}}:{{DOCKER_TAG}}'
+    - name: pullSecret
+      value: '{{DOCKER_REGISTRY_SECRET}}'
+    - name: dockerfile
+      value: 'Dockerfile'
+  volumes:
+  - name: 'dockercreds'
+    projected:
+      sources:
+      - secret:
+          name: '{{DOCKER_REGISTRY_SECRET}}'
+          items:
+            - key: '.dockerconfigjson'
+              path: 'config.json'
+  templates:
+  - name: build
+    container:
+      image: 'gcr.io/kaniko-project/executor:latest'
+      args:
+      - --cache=true
+      - --dockerfile=Dockerfile
+      - --context=s3://{{AWS_S3_BUCKET}}/{{EXPERIMENT_NAME}}/dockerbuild.tar.gz
+      - --destination={{DOCKER_REGISTRY}}/{{DOCKER_IMAGE}}:{{DOCKER_TAG}}
+      env:
+      - name: 'AWS_ACCESS_KEY_ID'
+        valueFrom:
+          secretKeyRef:
+            name: '{{AWS_SECRET_NAME}}'
+            key: 'aws_access_key'
+      - name: 'AWS_SECRET_ACCESS_KEY'
+        valueFrom:
+          secretKeyRef:
+            name: '{{AWS_SECRET_NAME}}'
+            key: 'aws_secret_key'
+      - name: 'AWS_DEFAULT_REGION'
+        value: '{{AWS_DEFAULT_REGION}}'
+      volumeMounts:
+      - mountPath: '/kaniko/.docker'
+        name: 'dockercreds'

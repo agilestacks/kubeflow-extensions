@@ -1,0 +1,78 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    getambassador.io/config: |-
+      ---
+      apiVersion: ambassador/v0
+      kind: Mapping
+      name: {{APPLICATION_NAME}}
+      prefix: /{{APPLICATION_NAME}}/
+      rewrite: /
+      timeout_ms: 300000
+      service: {{APPLICATION_NAME}}-flask.{{NAMESPACE}}:80
+      use_websocket: false
+  name: "{{APPLICATION_NAME}}-flask"
+  labels:
+    app: "{{APPLICATION_NAME}}"
+    tier: "frontend"
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: "http-server"
+  selector:
+    app: "{{APPLICATION_NAME}}"
+    tier: "frontend"
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: "{{APPLICATION_NAME}}-flask"
+spec:
+  selector:
+    matchLabels:
+      app: "{{APPLICATION_NAME}}"
+      tier: "frontend"
+  replicas: {{APPLICATION_REPLICAS}}
+  template:
+    metadata:
+      labels:
+        app: "{{APPLICATION_NAME}}"
+        tier: "frontend"
+    spec:
+      containers:
+      - name: "{{APPLICATION_NAME}}"
+        image: "{{APPLICATION_IMAGE}}"
+        imagePullPolicy: Always
+        env:
+        - name: SERVER_ADDR
+          value: "{{SELDON_APISERVER_ADDR}}"
+        - name: SAMPLE_DATA
+          value: "{{DATASET_FILE}}"
+        - name: GITHUB_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: jupyter-keyring
+              key: GITHUB_TOKEN
+        - name: OAUTH_KEY
+          value: "{{SELDON_OAUTH_KEY}}"
+        - name: OAUTH_SECRET
+          value: "{{SELDON_OAUTH_SECRET}}"
+        volumeMounts:
+        - mountPath: "{{MOUNT_PATH}}"
+          name: "data-dir"
+        ports:
+        - name: http-server
+          containerPort: 80
+        # resources:
+        #   limits:
+        #     cpu: "1"
+        #     memory: 4Gi
+        #   requests:
+        #     cpu: "1"
+        #     memory: 1Gi
+      volumes:
+      - name: "data-dir"
+        persistentVolumeClaim:
+          claimName: "{{BUCKET_PVC}}"
