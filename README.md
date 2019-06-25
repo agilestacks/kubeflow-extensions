@@ -1,5 +1,5 @@
 # Machine Learning Applications
-Current repository has been dedicated to the applicaiton templates used for machine learning
+Current repository has been dedicated to the Agile Stacks SuperHub applicaiton templates used for machine learning
 
 ## Repository layout
 
