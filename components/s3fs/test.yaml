@@ -1,0 +1,77 @@
+---
+apiVersion: v1
+kind: Secret
+type: goofysflex
+metadata:
+  name: minio-creds
+data:
+  accesskey: YWRtaW4=
+  secretkey: QWRtaW4xMjM0NQ==
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: minio-bucket
+  labels:
+    type: fuse
+    bucket: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 40Gi
+  volumeMode: Filesystem
+  flexVolume:
+    driver: "goofysflex"
+    secretRef:
+      name: minio-creds
+    options:
+      # Required
+      bucket: "default"
+      endpoint: "https://cluster-red-minio.app.cluster-red.antoncloud1.superhub.io"
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: minio-bucket
+spec:
+  accessModes:
+    - ReadWriteOnce
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 40Gi
+  storageClassName: manual
+  selector:
+    matchLabels:
+      type: fuse
+      bucket: default
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ubuntu
+spec:
+  selector:
+    matchLabels:
+      app: ubuntu
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: ubuntu
+    spec:
+      containers:
+      - name: ubuntu
+        image: ubuntu:latest
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: data
+          mountPath: /data
+        command: [ "/bin/bash", "-c", "--" ]
+        args: [ "sleep infinity" ]
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+         claimName: minio-bucket
