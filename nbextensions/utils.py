@@ -8,22 +8,6 @@ def sha1(*argv):
     s = ':'.join(argv)
     return hashlib.md5(s.encode()).hexdigest()
 
-
-def current_namespace():
-    try:
-        result = config.list_kube_config_contexts()[1].get(
-            'context', {}).get('namespace')
-        if result:
-            return result
-    except (IndexError, FileNotFoundError):
-        pass
-
-    try:
-        return open('/var/run/secrets/kubernetes.io/serviceaccount/namespace').read()
-    except OSError:
-        return 'default'
-
-
 def md5sum(filename):
     """Returns md5 sum"""
     hash_md5 = hashlib.md5()
@@ -50,3 +34,14 @@ def download_file(url, download_to, md5sum):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
     print('Done!')
+
+def encode_b64(value):
+    return base64.b64encode( value.encode('utf-8') ).decode('ascii')
+
+def is_ipython():
+    """Returns whether we are running in notebook."""
+    try:
+        import IPython
+    except ImportError:
+        return False
+    return True
