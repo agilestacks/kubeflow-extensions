@@ -1,0 +1,24 @@
+IPython >= 1.0
+ipython-secrets >= 1.1
+pystache >= 0.5
+boto3 >= 1.0
+kubernetes == 8.0.0
+keyring > 0
+ec2-metadata >= 2.0.0
+pandas
+ipdb
+scikit-learn
+ktext
+
+annoy
+tqdm
+nltk
+matplotlib
+bernoulli
+h5py
+# git clone https://github.com/google/seq2seq.git \
+./seq2seq/
+joblib
+autopep8
+yapf
+ipdb
