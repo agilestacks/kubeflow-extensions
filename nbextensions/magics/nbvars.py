@@ -41,8 +41,7 @@ class NBVarsMagics(Magics):
         user_ns = get_ipython().user_ns
         display(Markdown(f"Loading notebook variables from configmap: `{namespace}/{name}`"))
         try:
-            nbvars = load_nbvars(name, namespace, )
-            return nbvars
+            load_nbvars(name, namespace, )
         except ApiException as e:
             display(Code(f"Error reading configmap {namespace}/{name}: {e.status}, {e.reason}"))
             return e
