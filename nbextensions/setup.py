@@ -10,7 +10,6 @@ except ImportError: # for pip <= 9.0.3
 from os import path
 from io import open
 
-here = path.abspath(path.dirname(__file__))
 
 _version_major = 0
 _version_minor = 0
@@ -28,7 +27,10 @@ long_description = 'a very long description'
 # with open('./README.rst') as f:
 #     long_description = f.read()
 
-reqs = [ir for ir in parse_requirements('requirements.txt', session=False)]
+cwd = path.abspath(path.dirname(__file__))
+req_path = path.join(cwd, 'requirements.txt')
+
+reqs = [ir for ir in parse_requirements(req_path, session=False)]
 install_requires = [str(r.req) for r in reqs if r.req != None]
 dependency_links = [str(r.link) for r in reqs if r.req != None]
 
