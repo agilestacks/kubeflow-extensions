@@ -1,5 +1,5 @@
 # Kubeflow Pipeline Templates
-This is a repo for the Agile Stacks Kubeflow Pipelines templates. It contains end-to-end titorials for Kubeflow Pipelines, Keras, and Seldon. 
+This is a repo for the Agile Stacks Kubeflow Pipelines templates. It contains end-to-end tutorials for Kubeflow Pipelines, Keras, and Seldon. 
 
 In this tutorial we will introduce reusable Machine Learning Pipelines that can be used as a template for your machine learning scenarios. 
 
