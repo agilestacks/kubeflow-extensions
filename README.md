@@ -1,6 +1,17 @@
 # Kubeflow Pipeline Templates
 This is a repo for the Agile Stacks Kubeflow Pipelines templates. It contains end-to-end tutorials for Kubeflow Pipelines, Keras, and Seldon. 
 
+The following Kubeflow extensions are introduced to Kubeflow to address common challenges:
+1. get_secret for managing Kubernets secrets from Jupyter notebooks
+2. S3 filesystem for Kubeflow
+3. Kaniko KFP component for building Docker images
+4. Template magic for Notebooks
+5. Extensions for Notebooks: debugging, variable explorer
+6. Environment configuration for Notebooks based on configmaps and secrets
+7. Continuous deployment for Kubeflow Pipelines
+
+Each template introduces a machine learning project structure that allows to modularize data processing, model definition, model training, validation, and inference tasks.  Using distinct steps makes it possible to rerun only the steps you need, as you tweak and test your workflow. A well-defined, standard project structure helps all team members to understand how a model was created.
+
 In this tutorial we will introduce reusable Machine Learning Pipelines that can be used as a template for your machine learning scenarios. 
 
 We will cover the following steps:
