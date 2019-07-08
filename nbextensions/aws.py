@@ -55,12 +55,19 @@ def upload_to_s3(
         or bucket_mtimes[f] < getmtime(f)
     ]
 
+    skipped = []
     for f in local_files:
         key = join(prefix, f)
         try:
-            s3_client.upload_file(f, bucket, key)
-            total_size += getsize(f)
-            count += 1
+            s = getsize(f)
+            # minio throws for empty files
+            # urllib3.exceptions.HeaderParsingError: [MissingHeaderBodySeparatorDefect()]
+            if s > 0:
+              s3_client.upload_file(f, bucket, key)
+              total_size += s
+              count += 1
+            else:
+              skipped.append(f)
         except FileNotFoundError:
             pass
 
@@ -81,13 +88,17 @@ def upload_to_s3(
             url = f"{endpoint}/{bucket}/{prefix}/"
 
         total_sizeS = _format_bytes(total_size)
-        if count == 1:
-            countS = f"{count} file"
-        else:
-            countS = f"{count} files"
-
-        html = f'Uploaded <a href="{url}" target="_blank" >{countS}</a>; transferred: {total_sizeS}'
+        html = f'Uploaded <a href="{url}" target="_blank" >"{count} {fileOrFiles(count)}"</a>; transferred: {total_sizeS}'
+        if skipped:
+          skippedC = len(skipped)
+          skippedH = ", ".join( [f'<a href="{f}">{f}</a>' for f in skipped[:3]] )
+          if skippedC > 2:
+            skippedH += '...'
+          html += f'; skipped: {skippedC} {fileOrFiles(skippedC)} ({skippedH})'
         IPython.display.display(IPython.display.HTML(html))
+
+def fileOrFiles(how_many):
+  return 'file' if how_many is 1 else 'files' 
 
 def upload_tar_to_s3(
         destination,
