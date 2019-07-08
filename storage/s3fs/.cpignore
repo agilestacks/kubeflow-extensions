@@ -3,5 +3,5 @@ Dockerfile
 src
 entrypoint.sh
 export.sh
-install.yaml.template
 test.yaml
+.cpignore
