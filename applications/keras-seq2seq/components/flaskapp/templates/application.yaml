@@ -53,7 +53,7 @@ spec:
         - name: GITHUB_TOKEN
           valueFrom:
             secretKeyRef:
-              name: "{{APPLICATION_NAME}}-nb-keyring"
+              name: "{{KEYRING_SECRET}}"
               key: GITHUB_TOKEN
         - name: OAUTH_KEY
           value: "{{SELDON_OAUTH_KEY}}"
