@@ -6,15 +6,15 @@ metadata:
       ---
       apiVersion: ambassador/v0
       kind: Mapping
-      name: {{APPLICATION_NAME}}
-      prefix: /{{APPLICATION_NAME}}/
+      name: {{FLASK_APP_NAME}}
+      prefix: /{{FLASK_APP_NAME}}/
       rewrite: /
       timeout_ms: 300000
-      service: {{APPLICATION_NAME}}-flask.{{NAMESPACE}}:80
+      service: {{FLASK_APP_NAME}}-flask.{{NAMESPACE}}:80
       use_websocket: false
-  name: "{{APPLICATION_NAME}}-flask"
+  name: "{{FLASK_APP_NAME}}-flask"
   labels:
-    app: "{{APPLICATION_NAME}}"
+    app: "{{FLASK_APP_NAME}}"
     tier: "frontend"
 spec:
   type: ClusterIP
@@ -22,28 +22,28 @@ spec:
   - port: 80
     targetPort: "http-server"
   selector:
-    app: "{{APPLICATION_NAME}}"
+    app: "{{FLASK_APP_NAME}}"
     tier: "frontend"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{APPLICATION_NAME}}-flask"
+  name: "{{FLASK_APP_NAME}}-flask"
 spec:
   selector:
     matchLabels:
-      app: "{{APPLICATION_NAME}}"
+      app: "{{FLASK_APP_NAME}}"
       tier: "frontend"
-  replicas: {{APPLICATION_REPLICAS}}
+  replicas: {{FLASK_APP_REPLICAS}}
   template:
     metadata:
       labels:
-        app: "{{APPLICATION_NAME}}"
+        app: "{{FLASK_APP_NAME}}"
         tier: "frontend"
     spec:
       containers:
-      - name: "{{APPLICATION_NAME}}"
-        image: "{{APPLICATION_IMAGE}}"
+      - name: "{{FLASK_APP_NAME}}"
+        image: "{{FLASK_APP_IMAGE}}"
         imagePullPolicy: Always
         env:
         - name: SERVER_ADDR

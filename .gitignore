@@ -104,3 +104,4 @@ venv.bak/
 .mypy_cache/
 components/s3fs/bin
 components/s3fs/pkg/darwin_amd64
+applications/keras-seq2seq/components/flaskapp/Dockerfile
