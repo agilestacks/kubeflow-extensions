@@ -6,15 +6,15 @@ metadata:
       ---
       apiVersion: ambassador/v0
       kind: Mapping
-      name: {{FLASK_APP_NAME}}
-      prefix: /{{FLASK_APP_NAME}}/
+      name: {{FLASK_APP}}
+      prefix: /{{FLASK_APP}}/
       rewrite: /
       timeout_ms: 300000
-      service: {{FLASK_APP_NAME}}-flask.{{NAMESPACE}}:80
+      service: {{FLASK_APP}}-flask.{{NAMESPACE}}:80
       use_websocket: false
-  name: "{{FLASK_APP_NAME}}-flask"
+  name: "{{FLASK_APP}}-flask"
   labels:
-    app: "{{FLASK_APP_NAME}}"
+    app: "{{FLASK_APP}}"
     tier: "frontend"
 spec:
   type: ClusterIP
@@ -22,27 +22,27 @@ spec:
   - port: 80
     targetPort: "http-server"
   selector:
-    app: "{{FLASK_APP_NAME}}"
+    app: "{{FLASK_APP}}"
     tier: "frontend"
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: "{{FLASK_APP_NAME}}-flask"
+  name: "{{FLASK_APP}}-flask"
 spec:
   selector:
     matchLabels:
-      app: "{{FLASK_APP_NAME}}"
+      app: "{{FLASK_APP}}"
       tier: "frontend"
-  replicas: {{FLASK_APP_REPLICAS}}
+  replicas: {{FLASK_REPLICAS}}
   template:
     metadata:
       labels:
-        app: "{{FLASK_APP_NAME}}"
+        app: "{{FLASK_APP}}"
         tier: "frontend"
     spec:
       containers:
-      - name: "{{FLASK_APP_NAME}}"
+      - name: "{{FLASK_APP}}"
         image: "{{FLASK_APP_IMAGE}}"
         imagePullPolicy: Always
         env:
@@ -54,7 +54,7 @@ spec:
           valueFrom:
             secretKeyRef:
               name: "{{KEYRING_SECRET}}"
-              key: GITHUB_TOKEN
+              key: github_token
         - name: OAUTH_KEY
           value: "{{SELDON_OAUTH_KEY}}"
         - name: OAUTH_SECRET
