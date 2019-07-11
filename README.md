@@ -26,7 +26,7 @@ We will cover the following steps:
 * Automate experiment tracking, hyper parameter optimization, model versioning, deployment to production.
 * Implement simple web applications and send prediction requests to the deployed models using Seldon or Tensorflow Serving.
 
-Sample pipelines, algorithms, and training data sets are provided for solving common problems such as data cleansing and training on a large amount of samples
+Sample pipelines, algorithms, and training data sets are provided for solving common problems such as data cleansing and training on a large amount of samples.
 
 
 ## Repository layout
@@ -38,6 +38,14 @@ applications/ - application templates used to as tutorials and for user applicat
 storage/ - Contains storage plugins such as Goofys Flex plugin for S3
 nbextensions/ - Jupyter notebook extensions 
 ```
+
+## Automated Deployment Template on Agile Stacks
+Pipeline templates can be deployed on AWS and and on-prem Kubernetes clusters.  Support for GCP and Azure is coming soon.
+For step-by-step guide on using this repository please see [ML Pipelines Tutorial](https://www.agilestacks.com/tutorials/ml-pipelines)
+ 
+## Manual Deployment
+In this section, you will deploy the tutorial manually on existing Kubernetes cluster.
+Stay tuned for updates.
 
 ## Acknowledgments
 
