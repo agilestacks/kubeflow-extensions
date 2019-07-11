@@ -41,7 +41,7 @@ nbextensions/ - Jupyter notebook extensions
 
 ## Automated Deployment Template on Agile Stacks
 Pipeline templates can be deployed on AWS and and on-prem Kubernetes clusters.  Support for GCP and Azure is coming soon.
-For step-by-step guide on using this repository please see [ML Pipelines Tutorial](https://www.agilestacks.com/tutorials/ml-pipelines)
+For step-by-step guide on using this repository please see [ML Pipelines Templates](https://www.agilestacks.com/tutorials/ml-pipelines) tutorial on Agile Stacks site.
  
 ## Manual Deployment
 In this section, you will deploy the tutorial manually on existing Kubernetes cluster.
