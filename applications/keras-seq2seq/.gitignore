@@ -7,9 +7,9 @@ Dockerfile.seldon
 .ipynb_checkpoints/
 .vscode/
 .envrc
-hub.elaborate
-hub.state
 .hub/templates/*.yaml
 seq2seq/
 *.pem
-
+.hub/examples/
+*.elaborate
+*.state
