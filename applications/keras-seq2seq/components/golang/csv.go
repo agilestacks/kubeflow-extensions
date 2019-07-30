@@ -15,6 +15,7 @@ type Entry struct {
 }
 
 func main() {
+    fmt.Printf(`CSV.go arguments: %s`, os.Args)
 	if len(os.Args) != 3 {
 		usage()
 	}

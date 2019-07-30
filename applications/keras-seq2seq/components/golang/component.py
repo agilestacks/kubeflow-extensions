@@ -10,13 +10,13 @@ def _is_ipython():
         return False
     return True
 
-def training_op(script, image=None, arguments=[], file_outputs={}):
+def processing_op(script, image=None, arguments=[], file_outputs={}):
     """ A template function to encapsulate similar container ops
     """
 
     if not image and _is_ipython():
         from IPython import get_ipython
-        image = get_ipython().user_ns.get('TRAINING_IMAGE')
+        image = get_ipython().user_ns.get('GOLANG_IMAGE')
 
     if not image:
         raise ValueError(f"""
@@ -27,7 +27,7 @@ def training_op(script, image=None, arguments=[], file_outputs={}):
     return ContainerOp(
         name=re.sub(r'[\W_]+', '-', os.path.splitext(script.lower())[0]),
         image=image,
-        command=['/usr/local/bin/python', script],
+        command=[script],
         arguments=arguments,
         file_outputs=file_outputs,
     )
@@ -45,4 +45,3 @@ def http_download_op(url, download_to, md5sum):
             || curl -#Lv --create-dirs -o {download_to} {url}
         ''']
     )
-
