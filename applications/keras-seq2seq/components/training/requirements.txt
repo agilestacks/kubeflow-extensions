@@ -1,13 +1,16 @@
+# hard dependencies module versions must be exactly as is
+tensorflow==1.15.0
 numpy==1.16.2
-scikit-learn
-ktext
+# soft dependencies module versions derived from hard dependencies above
+scikit-learn~=0.21
+ktext==0.40
+annoy~=1.16
+tqdm~=4.37
+nltk~=3.4
+matplotlib~=3.1
+bernoulli~=0.1
+h5py~=2.10.0
+joblib~=0.14.0
 IPython
-annoy
-tqdm
-nltk
-matplotlib
-bernoulli
-h5py
 # git clone https://github.com/google/seq2seq.git \
 ./seq2seq/
-joblib
