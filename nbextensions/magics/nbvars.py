@@ -3,7 +3,6 @@ from IPython.core.magic import (line_magic, cell_magic, line_cell_magic, Magics,
 from IPython import get_ipython
 from IPython.display import (display, HTML, Code, Markdown)
 
-from kfp.compiler._k8s_helper import K8sHelper
 from kubernetes import config as kube_config
 from kubernetes import client as kube_client
 from kubernetes.client.rest import ApiException
@@ -46,10 +45,17 @@ class NBVarsMagics(Magics):
             display(Code(f"Error reading configmap {namespace}/{name}: {e.status}, {e.reason}"))
             return e
 
+
+def get_api_client_v1():
+    import kubernetes
+    api_client_v1 = kubernetes.client.CoreV1Api()
+    return api_client_v1
+
+
 def load_nbvars(configmap, namespace=current_namespace(), user_ns=get_ipython().user_ns):
     """Loads envvars into current notebook
     """
-    api = kube_client.CoreV1Api(K8sHelper()._api_client)
+    api = get_api_client_v1()
     resource = api.read_namespaced_config_map(configmap, namespace, exact=True)
     data = dict(resource.data)
     if 'NAMESPACE' not in user_ns:
