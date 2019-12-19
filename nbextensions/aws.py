@@ -7,7 +7,6 @@ import fnmatch
 
 from kubernetes import config as kube_config
 from kubernetes import client as kube_client
-from kfp.compiler._k8s_helper import K8sHelper
 from kubernetes.client.rest import ApiException
 from tempfile import NamedTemporaryFile
 
