@@ -5,11 +5,12 @@ boto3 >= 1.0
 kubernetes == 8.0.0
 keyring > 0
 ec2-metadata >= 2.0.0
+kfp == 0.1.38
+pyyaml
 pandas
 ipdb
 scikit-learn
 ktext
-
 annoy
 tqdm
 nltk

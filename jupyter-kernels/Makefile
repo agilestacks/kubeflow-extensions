@@ -5,6 +5,10 @@ all:
 	@ find . -name Dockerfile  -d -maxdepth 2 \
 		-exec $(MAKE) build push DOCKERFILE={} \;
 
+build-all:
+	@ find . -name Dockerfile  -d -maxdepth 2 \
+        -exec $(MAKE) build DOCKERFILE={} \;
+
 build:
 	docker build -t $(IMAGE) -f $(DOCKERFILE) $(dir $(DOCKERFILE))
 

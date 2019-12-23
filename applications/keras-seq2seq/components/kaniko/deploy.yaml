@@ -1,4 +1,4 @@
-name: docker_image
+name: kaniko
 description: >-
   Build and push docker image using Kaniko
 inputs:
@@ -11,7 +11,7 @@ inputs:
   type: String
   description: >-
     Name of the dockerfile to build
-- name: build_context
+- name: context
   type: String
   default: '.'
   description: >-
@@ -23,6 +23,6 @@ implementation:
     args: [
       --destination, {inputValue: image},
       --dockerfile, {inputValue: dockerfile},
-      --context, {inputValue: build_context},
+      --context, {inputValue: context},
       --cache
     ]

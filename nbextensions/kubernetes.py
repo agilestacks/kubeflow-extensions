@@ -1,4 +1,7 @@
 from kubernetes import config
+from uuid import uuid1
+from kubernetes import client as k8sc
+from os.path import basename, dirname
 
 def current_namespace():
     try:
@@ -14,6 +17,32 @@ def current_namespace():
     except OSError:
         return 'default'
 
+def dockerjson_pv(
+        pull_secret,
+        name=None, 
+        filename='.dockerconfigjson',
+        project_to='/kaniko/.docker/config.json'):
+    """
+    Creates V1Volume volume projection from kubernetes pull secret
+    """
+    from os.path import basename, dirname
+    from kubernetes import client
+    
+    if not name:
+        from uuid import uuid1
+        name='vol-' + str(uuid1())[:12]
+    
+    return k8sc.V1Volume(
+        name=name,
+        projected=k8sc.V1ProjectedVolumeSource(sources=[
+            k8sc.V1VolumeProjection(
+                secret=k8sc.V1SecretProjection(
+                    name=pull_secret, 
+                    items=[k8sc.V1KeyToPath(key=filename, path=basename(project_to))]
+                )
+            )
+        ])
+    )
     
 def use_pvc(name, mount_to, read_only=False):
     def _get_pvc_volume(pvc_name, task):
@@ -58,21 +87,13 @@ def use_pull_secret(
         filename='.dockerconfigjson', 
         project_to='/kaniko/.docker/config.json'):
     def _use_pull_secret(task):
-        from os.path import basename, dirname
-        from kubernetes import client as k8sc
-
         return (
             task.add_volume(
-                k8sc.V1Volume(
+                dockerjson_pv(
                     name='registrycreds',
-                    projected=k8sc.V1ProjectedVolumeSource(sources=[
-                        k8sc.V1VolumeProjection(
-                            secret=k8sc.V1SecretProjection(
-                                name=secret_name, 
-                                items=[k8sc.V1KeyToPath(key=filename, path=basename(project_to))]
-                            )
-                        )
-                    ])
+                    pull_secret=secret_name, 
+                    filename=filename, 
+                    project_to=project_to
                 )
             ).add_volume_mount(
                 k8sc.V1VolumeMount(
@@ -81,5 +102,4 @@ def use_pull_secret(
                 )
             )
         )
-
     return _use_pull_secret
