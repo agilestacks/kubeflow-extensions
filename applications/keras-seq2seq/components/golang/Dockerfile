@@ -8,5 +8,4 @@ RUN go get gocsv
 
 FROM busybox
 COPY --from=builder /go/bin/gocsv /usr/local/bin/
-COPY src /src
-WORKDIR /src
+ENTRYPOINT ["/usr/local/bin/gocsv"]
