@@ -111,6 +111,10 @@ spec:
 
 Here is a simplistic snippet how to run a single job that builds a docker image and pushes 
 ```python
+%reload_ext nbextensions
+from nbextensions.pv import use_pvc
+import nbextensions
+
 kaniko_op = load_component_from_file('components/kaniko/deploy.yaml')
 
 @dsl.pipeline(
@@ -132,6 +136,17 @@ def build_image(
     })
         
 Compiler().compile(build_image, 'argo-kaniko.yaml')
-utils.patch_pvolumes('argo-kaniko.yaml')
+nbextensions.utils.patch_pvolumes('argo-kaniko.yaml')
+
+# Copy docker files (and other artifacts to) to the `myhappybuccket/build-image-here`
+
+run = client.run_pipeline(
+    exp.id, f'Build image, 'argo-kaniko.yaml', 
+    params={
+        'image': "myhappyimage:latest",
+        'context': "./build-image-herre"
+    })
+    
+client.wait_for_run_completion(run.id, timeout=720).run
 ```
 
