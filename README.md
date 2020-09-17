@@ -1,5 +1,7 @@
-# Kubeflow Pipeline Templates
+# (Deprecated) Kubeflow Pipeline Templates
 This is a repo for the Agile Stacks Kubeflow Pipelines templates. It contains end-to-end tutorials for Kubeflow Pipelines, Keras, and Seldon. 
+
+Note: this version is no longer supported on Kubeflow 1.0.  A new example will be published soon.
 
 The following Kubeflow extensions are introduced to Kubeflow to address common challenges:
 1. get_secret for managing Kubernets secrets from Jupyter notebooks
