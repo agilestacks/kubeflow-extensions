@@ -1,0 +1,18 @@
+{
+	"load_extensions": {
+		"nbextensions_configurator/config_menu/main": true,
+		"contrib_nbextensions_help_item/main": true,
+		"codefolding/main": true,
+		"varInspector/main": true,
+		"autosavetime/main": true,
+		"code_prettify/code_prettify": true,
+		"collapsible_headings/main": true,
+		"livemdpreview/livemdpreview": true,
+		"execute_time/ExecuteTime": true,
+		"limit_output/main": true,
+		"toggle_all_line_numbers/main": true,
+		"code_prettify/autopep8": true
+	},
+	"limit_output": "256",
+	"limit_display_data": false
+}

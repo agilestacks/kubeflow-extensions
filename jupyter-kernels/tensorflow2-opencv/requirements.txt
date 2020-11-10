@@ -1,0 +1,15 @@
+# General notebook modules
+IPython >= 1.0
+ipython-secrets >= 1.1
+keyring
+notebook
+# nb extensions setup with dependencies
+jupyter_contrib_nbextensions
+jupyter_nbextensions_configurator
+autopep8
+yapf
+# Kubeflow
+kfp
+# OpenCV
+opencv-python
+boto3
