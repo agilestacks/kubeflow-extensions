@@ -1,5 +1,5 @@
 # hard dependencies module versions must be exactly as is
-tensorflow==1.15.0
+tensorflow==2.11.1
 numpy==1.16.2
 # soft dependencies module versions derived from hard dependencies above
 scikit-learn~=0.21
